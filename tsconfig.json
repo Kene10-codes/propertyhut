@@ -20,5 +20,5 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "src/pages/Home.jsx"]
+  "include": ["**/*.ts", "**/*.tsx", "src/pages/Home.tsx"]
 }
