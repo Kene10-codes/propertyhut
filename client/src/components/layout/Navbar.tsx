@@ -62,26 +62,26 @@ const Navbar = () => {
         {isOpen && (
           <div
             className={
-              "sm:hidden absolute left-0 top-18 w-full pt-4 z-50 gap-4 px-6 shadow-md bg-emerald-100 h-[60vw] max-h-screen flex flex-col items-center md:hidden"
+              "sm:hidden absolute left-0 top-18 w-full pt-4 z-50 gap-4 px-6 shadow-md bg-emerald-100 h-screen max-h-screen flex flex-col items-center md:hidden"
             }
           >
             <NavLink
               to="/post-property"
-              className="sm:hidden my-2 text-center w-full rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700 transition-colors duration-200 hover:border-emerald-300 hover:bg-emerald-100 sm:inline-flex"
+              className="sm:hidden mb-2.5 mt-5  text-center w-full rounded-full border border-emerald-200 bg-emerald-50 px-4 py-4 text-sm font-semibold text-emerald-700 transition-colors duration-200 hover:border-emerald-300 hover:bg-emerald-100 sm:inline-flex"
             >
               Post Property
             </NavLink>
 
             <NavLink
               to="/signup"
-              className="rounded-full mb-2 w-full text-center border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
+              className="rounded-full mb-2.5 w-full text-center border border-slate-200 bg-white px-4 py-4 text-sm font-semibold text-slate-700 transition-all duration-200 hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
             >
               Sign up
             </NavLink>
 
             <NavLink
               to="/login"
-              className="rounded-full w-full text-center bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-slate-900/10 transition-all duration-200 hover:bg-slate-800"
+              className="rounded-full w-full mb-2.5 text-center bg-slate-900 px-4 py-4 text-sm font-semibold text-white shadow-lg shadow-slate-900/10 transition-all duration-200 hover:bg-slate-800"
             >
               Log in
             </NavLink>

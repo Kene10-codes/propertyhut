@@ -13,7 +13,9 @@ const initialState: SignupFormData = {
 };
 
 const Register = () => {
-  const [signupForm, setSignupForm] = useState<SignupFormData | null>(initialState);
+  const [signupForm, setSignupForm] = useState<SignupFormData | null>(
+    initialState,
+  );
 
   return (
     <div className="flex flex-col mx-auto justify-center items-center min-h-screen bg-gray-30 px-2 py-8 sm:px-6 lg:px-8">
@@ -27,35 +29,36 @@ const Register = () => {
           </p>
         </div>
 
-        <form className="bg-white p-1 xm:p-2 md:p-3 lg:p-5 rounded-4xl grid grid-cols-1 gap-4 md:gap-6">
-          <Input
-            label="First Name:"
-            placeholder="First Name"
-            className="mb-1 md:my-2"
-          />
-          <Input
-            label="Last Name:"
-            placeholder="Last Name"
-            className="mb-1 md:my-2"
-          />
+        <form className="bg-white p-1 xm:p-2 md:p-3 lg:p-5 rounded-4xl">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+            <Input
+              label="First Name:"
+              placeholder="First Name"
+              className="mb-1 md:my-2"
+            />
+            <Input
+              label="Last Name:"
+              placeholder="Last Name"
+              className="mb-1 md:my-2"
+            />
 
-          <Input
-            label="Email:"
-            type="email"
-            placeholder="Email"
-            className="mb-1 md:my-2"
-          />
+            <Input
+              label="Email:"
+              type="email"
+              placeholder="Email"
+              className="mb-1 md:my-2"
+            />
 
-          <Input
-            label="Phone Number:"
-            type="tel"
-            placeholder="Phone Number"
-            className="mb-1 md:my-2"
-          />
+            <Input
+              label="Phone Number:"
+              type="tel"
+              placeholder="Phone Number"
+              className="mb-1 md:my-2"
+            />
 
-          <Input label="Password:" type="password" className="mb-1 md:my-2" />
-
-          <Button type="submit" className="grid md:grid-cols-3">
+            <Input label="Password:" type="password" className="mb-1 md:my-2" />
+          </div>
+          <Button type="submit" className="w-full mt-5">
             Sign up
           </Button>
         </form>
