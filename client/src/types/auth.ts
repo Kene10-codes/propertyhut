@@ -6,7 +6,7 @@ export interface SignupFormData {
   lastName: string;
   email: string;
   phoneNumber: string;
-  roles?: Role;
+  role?: Role;
   password: string;
 }
 
