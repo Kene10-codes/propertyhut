@@ -1,22 +1,21 @@
 import { Schema, model } from "mongoose";
-import { lowercase, minLength } from "zod";
 
 export type Role = "user" | "agent" | "admin";
 
-const signupSchema = new Schema(
+const user = new Schema(
   {
     firstName: {
       type: String,
       required: true,
       trim: true,
-      minLength: 1,
+      minLength: 2,
     },
 
     lastName: {
       type: String,
       required: true,
       trim: true,
-      minLength: 1,
+      minLength: 2,
     },
     email: {
       type: String,
@@ -25,19 +24,24 @@ const signupSchema = new Schema(
       lowercase: true,
       index: true,
       trim: true,
-      minLength: 1,
+      minLength: 2,
     },
-    phoneNumber: {
+    phone: {
       type: String,
       required: true,
       trim: true,
       minLength: 11,
     },
-    roles: { type: String, enum: ["user", "agent", "admin"], default: "user" },
+    role: { type: String, enum: ["user", "agent", "admin"], default: "user" },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "approved",
+    },
     password: { type: String, required: true, minLength: 8 },
     createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true },
 );
 
-export const User = model("User", signupSchema);
+export const User = model("User", user);

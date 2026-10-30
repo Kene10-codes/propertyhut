@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import { env } from "./config/env.js";
+import { errorHandler } from "./middleware/error.js";
 
 // Initialize dotenv configuration
 dotenv.config();
@@ -24,8 +25,10 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Welcome, to Property Hut server...");
 });
 
-// Call the database function
+// Register the error handler 
+app.use(errorHandler);
 
+// Call the database function
 try {
   await connectDB();
   app.listen(env.PORT, () => console.log(`API listening on ${env.PORT}`));
