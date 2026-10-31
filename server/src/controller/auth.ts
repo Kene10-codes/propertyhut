@@ -69,7 +69,7 @@ async function signup(req: Request, res: Response) {
    const existingEmail = await User.findOne({ email });
 
    if(existingEmail){
-    return res.status(403).json({
+    return res.status(409).json({
        message: "Email exists already!"
     })
    }
@@ -78,7 +78,7 @@ async function signup(req: Request, res: Response) {
    const existingPhone = await User.findOne({ phone });
    
    if(existingPhone){
-    return res.status(403).json({
+    return res.status(409).json({
        message: "Phone number exists already!"
     })
    }
@@ -101,7 +101,7 @@ async function signup(req: Request, res: Response) {
   })
 
   return res.status(201).json({
-     message: status === "pending" ? "Kndly wait for admin to approve" : "User registered succesfully"
+     message: status === "pending" ? "Kndly wait for admin to approve" : "User registered succesfully",
      user: {
       id: user._id.toString(),
       email: user.email,
@@ -111,3 +111,5 @@ async function signup(req: Request, res: Response) {
   })
 
 }
+
+export { login, signup };

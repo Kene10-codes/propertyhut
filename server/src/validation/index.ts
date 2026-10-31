@@ -33,9 +33,6 @@ const sigupValidation = [
     .notEmpty()
     .withMessage("Phone cannot be empty"),
 
-  // Validate role
-  body("role").toString(),
-
   // Validate status
   body("status").toString(),
 
@@ -64,4 +61,4 @@ const sigupValidation = [
 ];
 
 
-module.exports = { sigupValidation }
+export  { sigupValidation }
