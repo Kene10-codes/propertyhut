@@ -10,7 +10,7 @@ interface SignupData {
     lastName: string;
     email: string;
     phone: string;
-    role?: "user" | "agent";
+    role?: "user" | "agent" | "admin";
     password: string;           
 }
 
