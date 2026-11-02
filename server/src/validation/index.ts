@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
 
-const sigupValidation = [
+const signupValidation = [
   // Validate last name
   body("lastName")
     .isString()
@@ -33,18 +33,43 @@ const sigupValidation = [
     .notEmpty()
     .withMessage("Phone cannot be empty"),
 
-  // Validate status
-  body("status").toString(),
+  // Validate password
+  body("password")
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters long")
+    .notEmpty()
+    .withMessage("Password field cannot be empty"),
+
+    (req: Request, res: Response, next: NextFunction) => {
+      const errors = validationResult(req);
+
+      if(!errors.isEmpty()) {
+        return res.status(400).json({
+          errors: errors.array()
+        })
+      }
+
+      next()
+    }
+];
+
+const loginValidation = [
+
+  // Validate email
+  body("email")
+    .isString()
+    .trim()
+    .isEmail()
+    .withMessage("Please provide a valid email address")
+    .notEmpty()
+    .withMessage("Email field cannot be empty")
+    .normalizeEmail(),
 
   // Validate password
   body("password")
-    .matches(/A-Z/)
-    .withMessage("Password must have atleast one uppercase letter")
-    .matches(/0-9/)
-    .withMessage("Password must have atleast one number")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long")
-    .isEmpty()
+    .notEmpty()
     .withMessage("Password field cannot be empty"),
 
     (req: Request, res: Response, next: NextFunction) => {
@@ -61,4 +86,4 @@ const sigupValidation = [
 ];
 
 
-export  { sigupValidation }
+export  { signupValidation, loginValidation }

@@ -4,14 +4,19 @@ import { connectDB } from "./config/db.js";
 import { env } from "./config/env.js";
 import { errorHandler } from "./middleware/error.js";
 
+import authRoutes from "./route/authRoutes.js"
+
 // Initialize dotenv configuration
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// API MIDDLEWARE ROUTES
+app.use("/api/auth", authRoutes);
 
 // Health-check endpoint
 app.get("/api/health", (req, res) => {
