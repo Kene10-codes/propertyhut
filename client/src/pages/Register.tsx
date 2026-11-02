@@ -1,21 +1,8 @@
-import { useState } from "react";
-import type { SignupFormData } from "../types/auth";
 
 import Input from "../components/input/Input";
 import Button from "../components/button/Button";
 
-const initialState: SignupFormData = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phoneNumber: "",
-  password: "",
-};
-
 const Register = () => {
-  const [signupForm, setSignupForm] = useState<SignupFormData | null>(
-    initialState,
-  );
 
   return (
     <div className="flex flex-col mx-auto justify-center items-center min-h-screen bg-gray-30 px-2 py-8 sm:px-6 lg:px-8">

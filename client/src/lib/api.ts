@@ -1,5 +1,4 @@
 import axios from "axios";
-import type { LoginFormData, SignupFormData } from "../types/auth";
 
 const API_URL =
   (import.meta as ImportMeta & { env: { VITE_API_URL?: string } }).env
@@ -22,6 +21,3 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export const signup = (data: SignupFormData) => api.post("/signup", data);
-
-export const login = (data: LoginFormData) => api.post("/login", data);
