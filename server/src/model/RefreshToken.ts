@@ -1,33 +1,56 @@
-import { Schema, model } from "mongoose";
+import {model, Schema, Document, Types } from "mongoose";
 
-const refreshTokenSchema = new Schema(
+export interface IRefreshToken extends Document {
+  user: Types.ObjectId;
+  tokenHash: string;
+  family: string;
+  expiresAt: Date;
+  revokedAt?: Date | null;
+  replacedBy?: Types.ObjectId | null;
+}
+
+const refreshTokenSchema = new Schema<IRefreshToken>(
   {
-    tokenId: {
-      type: String,
-      required: true,
-      index: true,
-    },
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
       index: true,
     },
+
     tokenHash: {
       type: String,
       required: true,
+      unique: true,
     },
-    familyId: {
+
+    family: {
       type: String,
       required: true,
+      index: true,
     },
-    jti: {
-      type: String,
+
+    expiresAt: {
+      type: Date,
       required: true,
+      index: { expires: 0 },
+    },
+
+    revokedAt: {
+      type: Date,
+      default: null,
+    },
+
+    replacedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "RefreshToken",
+      default: null,
     },
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true }
 );
-export const RefreshToken = model("RefreshToken", refreshTokenSchema);
+
+export const RefreshToken = model<IRefreshToken>(
+  "RefreshToken",
+  refreshTokenSchema
+);

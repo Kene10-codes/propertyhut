@@ -1,8 +1,20 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
 export type Role = "user" | "agent" | "admin";
+export type Status = "pending" | "approved" | "rejected"
 
-const user = new Schema(
+export interface IUser extends Document {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  role: Role;
+  status: Status;
+  password: string;
+  createdAt: Date;
+}
+
+const user = new Schema<IUser>(
   {
     firstName: {
       type: String,
@@ -45,4 +57,4 @@ const user = new Schema(
   { timestamps: true },
 );
 
-export const User = model("User", user);
+export const User = model<IUser>("User", user);

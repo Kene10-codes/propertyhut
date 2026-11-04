@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 
 import { User } from "../model/User.js";
-import { token } from "../utils/token.js";
+import { generateAccessToken } from "../utils/generateToken.js";
 import { env } from "../config/env.js";
 import { successResponse, errorResponse } from "../utils/response.js";
 
@@ -29,7 +29,7 @@ async function login(req: Request, res: Response) {
   }
 
   // Generate token
-  const generatedToken = token(user);
+  const generatedToken = generateAccessToken(user);
 
    successResponse(res, "Logged in successfully", 200, generatedToken);
 }
