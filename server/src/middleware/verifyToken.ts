@@ -34,7 +34,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
   const token = authHeader?.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, env.JWT_SECRET);
+    const decoded = jwt.verify(token, env.ACCESS_TOKEN_SECRET) as AuthPayload;
     if (
       typeof decoded !== "object" ||
       decoded === null ||

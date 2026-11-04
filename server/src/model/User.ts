@@ -31,6 +31,7 @@ const user = new Schema(
       required: true,
       trim: true,
       minLength: 11,
+      select: false
     },
     role: { type: String, enum: ["user", "agent", "admin"], default: "user" },
     status: {

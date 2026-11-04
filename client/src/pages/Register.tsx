@@ -274,6 +274,7 @@ const Register = () => {
                   payload: e.target.value,
                 })
               }
+              placeholder="Password"
               error={error.password || undefined}
             />
           </div>

@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 
 import { User } from "../model/User.js";
 import { token } from "../utils/token.js";
+import { env } from "../config/env.js";
 import { successResponse, errorResponse } from "../utils/response.js";
 
 async function login(req: Request, res: Response) {
@@ -53,7 +54,7 @@ async function signup(req: Request, res: Response) {
   }
 
   // Generate salt Password
-  const salt = await bcrypt.genSalt(12);
+  const salt = await bcrypt.genSalt(env.BCRYPT_SALT_ROUNDS);
 
   // Hash password
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -82,4 +83,31 @@ async function signup(req: Request, res: Response) {
   });
 }
 
-export { login, signup };
+// ME/USER CONTROLLER
+async function Profile(req: Request, res: Response) {
+  const user = req.auth;
+
+  if (!user) {
+    errorResponse(res, "User not found", 404);
+    return;
+  }
+
+  // FINMD USER BY ID
+  const foundUser = await User.findById(user.id).select("-password");
+
+  if (!foundUser) {
+    errorResponse(res, "User not found", 404);
+    return;
+  }
+
+  successResponse(res, "User found", 200, {
+    id: foundUser._id.toString(),
+    firstName: foundUser.firstName,
+    lastName: foundUser.lastName,
+    email: foundUser.email,
+    status: foundUser.status,
+    phone: foundUser.phone
+  });
+}
+
+export { login, signup, Profile };
