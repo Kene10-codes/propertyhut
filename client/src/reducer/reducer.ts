@@ -7,6 +7,7 @@ export const initialState: LoginState = {
   error: {
     email: "",
     password: "",
+    general: "",
   },
 };
 
@@ -19,6 +20,7 @@ export function loginReducer(state: LoginState, action: LoginAction) {
         error: {
           ...state.error,
           email: "",
+          general: "",
         },
       };
     case "SET_PASSWORD":
@@ -28,10 +30,15 @@ export function loginReducer(state: LoginState, action: LoginAction) {
         error: {
           ...state.error,
           password: "",
+          general: "",
         },
       };
     case "LOGIN_START":
-      return { ...state, isLoading: true };
+      return {
+        ...state,
+        isLoading: true,
+        error: { email: "", password: "", general: "" },
+      };
 
     case "LOGIN_SUCCESS":
       return { ...initialState };
@@ -50,6 +57,11 @@ export function loginReducer(state: LoginState, action: LoginAction) {
             (action.payload.field as string) === "password"
               ? action.payload.message
               : state.error.password,
+          general:
+            action.payload.field === "general" ||
+            action.payload.field === undefined
+              ? action.payload.message
+              : state.error.general,
         },
       };
 

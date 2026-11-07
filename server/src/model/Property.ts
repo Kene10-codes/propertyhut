@@ -1,2 +1,1 @@
-import { Schema, model } from "mongoose";
-
+import { Schema, model, Document } from "mongoose";

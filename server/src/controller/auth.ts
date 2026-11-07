@@ -2,7 +2,6 @@ import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 
 import { User } from "../model/User.js";
-import { generateAccessToken } from "../utils/generateToken.js";
 import { env } from "../config/env.js";
 import { successResponse, errorResponse } from "../utils/response.js";
 import {
@@ -24,7 +23,6 @@ async function login(req: Request, res: Response) {
       errorResponse(res, "Invalid email or password", 400);
       return;
     }
-
     if (user?.status === "pending") {
       errorResponse(
         res,
@@ -46,6 +44,7 @@ async function login(req: Request, res: Response) {
     successResponse(res, "Logged in successfully", 200, {
       accessToken: tokens.accessToken,
       id: user._id.toString(),
+      firstName: user.firstName,
       email: user.email,
       role: user.role,
     });
@@ -130,11 +129,10 @@ async function Profile(req: Request, res: Response) {
       firstName: foundUser.firstName,
       lastName: foundUser.lastName,
       email: foundUser.email,
-      status: foundUser.status,
       phone: foundUser.phone,
     });
   } catch (error) {
-    errorResponse(res, "Profile was not retreieved successfully", 500)
+    errorResponse(res, "Profile was not retreieved successfully", 500);
   }
 }
 
@@ -169,6 +167,7 @@ async function refresh(req: Request, res: Response) {
       message === "REFRESH_TOKEN_REUSE"
     ) {
       errorResponse(res, "Session expired. Please log in again.", 401);
+      return;
     }
     errorResponse(res, "Could not refresh session", 500);
   }

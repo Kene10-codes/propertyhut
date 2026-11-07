@@ -1,12 +1,12 @@
 import Input from "../components/input/Input";
 import Button from "../components/button/Button";
 import { useAuth } from "../hooks/useAuth";
-import { login } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { state, dispatch } = useAuth();
+  const { state, dispatch, login } = useAuth();
   const { email, password, isLoading, error } = state;
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -58,37 +58,23 @@ const Login = () => {
     }
 
     try {
-      const response = await login({ email, password });
-
-      if (!response.data) {
-        dispatch({
-          type: "LOGIN_ERROR",
-          payload: {
-            field: undefined,
-            message: "Something went wrong",
-          },
-        });
-        return;
-      }
-
-      dispatch({
-        type: "LOGIN_SUCCESS",
-        payload: response.data.token,
-      });
+      await login(email, password);
+      dispatch({ type: "LOGIN_SUCCESS" });
       navigate("/dashboard");
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Invalid credentials";
+      const errorMessage = axios.isAxiosError<{ message?: string }>(error)
+        ? error.response?.data?.message ?? "Unable to log in. Please try again."
+        : error instanceof Error
+          ? error.message
+          : "Unable to log in. Please try again.";
 
       dispatch({
         type: "LOGIN_ERROR",
         payload: {
-          field: undefined,
+          field: "general",
           message: errorMessage,
         },
       });
-    } finally {
-      dispatch({ type: "FORM_RESET" });
     }
   }
 
@@ -108,6 +94,12 @@ const Login = () => {
           onSubmit={handleSubmit}
           className="grid grid-cols-1 gap-4 rounded-4xl bg-white p-1 md:gap-6 xm:p-2 md:p-3 lg:p-5"
         >
+          {error.general && (
+            <p className="text-center text-sm text-red-600" role="alert">
+              {error.general}
+            </p>
+          )}
+
           <Input
             label="Email:"
             type="email"

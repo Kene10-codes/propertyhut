@@ -1,5 +1,15 @@
 export type Role = "user" | "agent" | "admin";
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  lastName: string;
+  firstName: string;
+  phone: string;
+  role: Role;
+}
+
 export interface SignupState {
   firstName: string;
   lastName: string;
@@ -25,6 +35,7 @@ export interface LoginState {
   error: {
     email: string;
     password: string;
+    general: string;
   };
 }
 
@@ -32,17 +43,11 @@ export type LoginAction =
   | { type: "SET_EMAIL"; payload: string }
   | { type: "SET_PASSWORD"; payload: string }
   | { type: "LOGIN_START" }
-  | {
-      type: "LOGIN_SUCCESS";
-      payload: {
-        email: string;
-        password: string;
-      };
-    }
+  | { type: "LOGIN_SUCCESS" }
   | {
       type: "LOGIN_ERROR";
       payload: {
-        field: "email" | "password" | undefined;
+        field: "email" | "password" | "general" | undefined;
         message: string;
       };
     }

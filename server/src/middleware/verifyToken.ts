@@ -5,7 +5,7 @@ import { env } from "../config/env.js";
 
 type Role = "user" | "agent" | "admin";
 
-interface AuthPayload {
+export interface AuthPayload {
   id: string;
   role: Role;
 }
@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-function verifyToken(req: Request, res: Response, next: NextFunction) {
+export function authenticate(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -63,4 +63,4 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { verifyToken };
+

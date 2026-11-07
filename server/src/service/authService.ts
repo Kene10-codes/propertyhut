@@ -28,7 +28,7 @@ export const createSession = async (user: User) => {
 
 
   const savedToken = await RefreshToken.create({
-    user: String(user.id),
+    user: user.id.toString(),
     tokenHash,
     family,
     expiresAt: getRefreshExpiry(),
