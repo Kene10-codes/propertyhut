@@ -20,6 +20,7 @@ export interface User {
   createdAt: Date;
 }
 
+// GENERATE ACCESS TOKEN
 export function generateAccessToken(user: User): string {
   const secret = env.ACCESS_TOKEN_SECRET;
   const expiresIn = env.ACCESS_TOKEN_EXPIRES;
@@ -46,4 +47,16 @@ export function generateRefreshToken(): string {
 // Generates a hash of the refresh token for secure storage
 export function hashRefreshToken(token: string): string {
   return crypto.createHash("sha256").update(token).digest("hex");
+}
+
+// GENERATE PASSWORD RESET TOKEN
+export function generatePasswordResetToken() {
+  const resetToken = crypto.randomBytes(64).toString("hex");
+
+  const hashToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  return { resetToken, hashToken };
 }

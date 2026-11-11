@@ -10,6 +10,11 @@ export interface IUser extends Document {
   phone: string;
   role: Role;
   status: Status;
+  isEmailVerified: Boolean;
+  emailVerificationToken: string;
+  emailVerificationExpires: Date;
+  resetPasswordToken: string;
+  resetPasswordExpires: Date;
   password: string;
   createdAt: Date;
 }
@@ -42,13 +47,35 @@ const user = new Schema<IUser>(
       type: String,
       required: true,
       trim: true,
-      minLength: 11
+      minLength: 11,
     },
     role: { type: String, enum: ["user", "agent", "admin"], default: "user" },
     status: {
       type: String,
       enum: ["pending", "approved", "rejected"],
       default: "approved",
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    emailVerificationToken: {
+      type: String,
+      default: null,
+    },
+
+    emailVerificationExpires: {
+      type: Date,
+      default: null,
+    },
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordExpires: {
+      type: Date,
+      default: null,
     },
     password: { type: String, required: true, minLength: 8 },
     createdAt: { type: Date, default: Date.now },
