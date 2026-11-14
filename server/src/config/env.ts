@@ -8,6 +8,7 @@ const schema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
   MAIL_FROM: z.string().optional(),
+  SMTP_SECURE: z.string(),
   ACCESS_TOKEN_SECRET: z.string().min(64),
   REFRESH_TOKEN_SECRET: z.string().min(64),
   ACCESS_TOKEN_EXPIRES: z.string().default("15"),

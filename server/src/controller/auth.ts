@@ -154,6 +154,7 @@ async function signup(req: Request, res: Response) {
       email: user.email,
       role: user.role,
     });
+    return
   } catch (error) {
     errorResponse(res, "Signup failed", 500);
   }
