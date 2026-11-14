@@ -53,10 +53,10 @@ export function hashRefreshToken(token: string): string {
 export function generatePasswordResetToken() {
   const resetToken = crypto.randomBytes(64).toString("hex");
 
-  const hashToken = crypto
+  const hashedToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
 
-  return { resetToken, hashToken };
+  return { resetToken, hashedToken };
 }

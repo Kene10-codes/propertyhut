@@ -3,6 +3,11 @@ import { z } from "zod";
 
 const schema = z.object({
   NODE_ENV: z.string().default("development"),
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: z.coerce.number().default(587),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
+  MAIL_FROM: z.string().optional(),
   ACCESS_TOKEN_SECRET: z.string().min(64),
   REFRESH_TOKEN_SECRET: z.string().min(64),
   ACCESS_TOKEN_EXPIRES: z.string().default("15"),

@@ -12,9 +12,9 @@ export interface IUser extends Document {
   status: Status;
   isEmailVerified: Boolean;
   emailVerificationToken: string;
-  emailVerificationExpires: Date;
+  emailVerificationTokenExpires: Date;
   resetPasswordToken: string;
-  resetPasswordExpires: Date;
+  resetPasswordTokenExpires: Date;
   password: string;
   createdAt: Date;
 }
@@ -65,7 +65,7 @@ const user = new Schema<IUser>(
       default: null,
     },
 
-    emailVerificationExpires: {
+    emailVerificationTokenExpires: {
       type: Date,
       default: null,
     },
@@ -73,7 +73,7 @@ const user = new Schema<IUser>(
       type: String,
       default: null,
     },
-    resetPasswordExpires: {
+    resetPasswordTokenExpires: {
       type: Date,
       default: null,
     },
