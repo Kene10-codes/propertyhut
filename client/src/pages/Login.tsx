@@ -1,7 +1,7 @@
 import Input from "../components/input/Input";
 import Button from "../components/button/Button";
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
@@ -63,7 +63,8 @@ const Login = () => {
       navigate("/dashboard");
     } catch (error) {
       const errorMessage = axios.isAxiosError<{ message?: string }>(error)
-        ? error.response?.data?.message ?? "Unable to log in. Please try again."
+        ? (error.response?.data?.message ??
+          "Unable to log in. Please try again.")
         : error instanceof Error
           ? error.message
           : "Unable to log in. Please try again.";
@@ -80,10 +81,10 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-2 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto w-full max-w-3xl space-y-6 rounded-2xl bg-white p-5 shadow-sm sm:p-8">
+      <div className="mx-auto w-full max-w-xl space-y-6 rounded-3xl bg-white p-5 shadow-sm sm:p-8">
         <div className="mb-4 md:mb-8">
           <h1 className="py-2 text-center text-xl font-bold text-teal-500 md:text-2xl lg:text-3xl">
-            Log in on PropertyHut
+            Log In
           </h1>
           <p className="text-center text-sm text-gray-600 md:text-base">
             Enter your details to get started.
@@ -129,7 +130,9 @@ const Login = () => {
               })
             }
           />
-
+          <Link to="/forgot-password" className="text-teal-600 text-sm hover:underline">
+            Forgot Password?
+          </Link>
           <Button type="submit" className="grid md:grid-cols-3">
             {isLoading ? "Logging in..." : "Log in"}
           </Button>

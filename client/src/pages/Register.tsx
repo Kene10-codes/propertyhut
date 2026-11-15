@@ -3,7 +3,7 @@ import Button from "../components/button/Button";
 import Select from "../components/select/Select";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { signup } from "../services/authService";
+import { signupApi } from "../services/authService";
 
 const Register = () => {
   const { signupState, signupDispatch } = useAuth();
@@ -19,7 +19,7 @@ const Register = () => {
   } = signupState;
   const navigate = useNavigate();
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     // Handle form submission logic here
     signupDispatch({ type: "SIGNUP_START" });
@@ -125,7 +125,7 @@ const Register = () => {
     }
 
     try {
-      const response = signup({
+      const response = signupApi({
         firstName,
         lastName,
         email,
@@ -178,7 +178,7 @@ const Register = () => {
       <div className="mx-auto shadow-md space-y-6 w-full max-w-3xl rounded-2xl bg-white p-6 shadow-sm p-5 sm:p-8">
         <div className="mb-4 md:mb-8">
           <h1 className="text-center font-bold  text-xl md:text-2xl lg:text-3xl py-2 text-teal-500">
-            Register on PropertyHut
+            Register An Account
           </h1>
           <p className="text-center text-sm md:text-base text-gray-600">
             Enter your details to get started.

@@ -8,6 +8,10 @@ import Dashboard from "./pages/Dashboard";
 import Layout from "./components/layout/Layout";
 import Unauthorized from "./pages/Unauthourized";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
+import VerifyEmail from "./pages/VerifyEmail";
+import ResendVerification from "./pages/ResendVerification";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -17,10 +21,11 @@ function App() {
           <Route index element={<Home />} />
           <Route path="signup" element={<Register />} />
           <Route path="login" element={<Login />} />
-            <Route
-          path="/unauthorized"
-          element={<Unauthorized />}
-        />
+          <Route path="verify-email/:token" element={<VerifyEmail />} />
+          <Route path="resend-verification" element={<ResendVerification />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password/:token" element={<ResetPassword />} />
+          <Route path="unauthorized" element={<Unauthorized />} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />

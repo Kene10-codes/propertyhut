@@ -21,7 +21,7 @@ import {
 } from "../reducer/reducer";
 import { api } from "../lib/api";
 import { clearAccessToken, setAccessToken } from "../utils/tokenManager";
-import { login } from "../services/authService";
+import { loginApi } from "../services/authService";
 
 // Define the Context Type
 export interface AuthContextType {
