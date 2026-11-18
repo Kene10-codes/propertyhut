@@ -252,8 +252,7 @@ const verifyEmail = async (req: Request, res: Response) => {
   try {
     const tokenParam = req.params.token;
     const token = Array.isArray(tokenParam) ? tokenParam[0] : tokenParam;
-
-    if (!token || !/^[a-f0-9]{64}$/i.test(token)) {
+    if (!token || !/^[a-f0-9]{128}$/i.test(token)) {
       return res.status(400).json({
         success: false,
         message: "Invalid or expired verification link.",
@@ -266,7 +265,7 @@ const verifyEmail = async (req: Request, res: Response) => {
     const user = await User.findOneAndUpdate(
       {
         emailVerificationToken: hashedToken,
-        emailVerificationExpires: {
+        emailVerificationTokenExpires: {
           $gt: new Date(),
         },
         isEmailVerified: false,
@@ -277,18 +276,18 @@ const verifyEmail = async (req: Request, res: Response) => {
         },
         $unset: {
           emailVerificationToken: 1,
-          emailVerificationExpires: 1,
+          emailVerificationTokenExpires: 1,
         },
       },
-      {
-        new: true,
-      },
+      { returnDocument: 'after' }
     );
 
     if (!user) {
       errorResponse(res, "Invalid or expired verification link.", 400);
       return;
     }
+
+
 
     successResponse(
       res,
@@ -464,13 +463,13 @@ const resetPassword = async (
   res: Response
 ) => {
   try {
-    const tokenParams  = req.params;
+    const tokenParams = req.params;
     const { password } = req.body;
 
     const token = tokenParams ? tokenParams[0] : tokenParams;
 
-    if (!token || !/^[a-f0-9]{64}$/i.test(token)) {
-      errorResponse(res, "Invalid or expired password reset link.", 400 );
+    if (!token || !/^[a-f0-9]{128}$/i.test(token)) {
+      errorResponse(res, "Invalid or expired password reset link.", 400);
       return;
     }
 
@@ -495,7 +494,7 @@ const resetPassword = async (
     });
 
     if (!user) {
-      errorResponse(res, "Invalid or expired password reset link." , 400);
+      errorResponse(res, "Invalid or expired password reset link.", 400);
       return;
     }
 
@@ -514,10 +513,10 @@ const resetPassword = async (
 
     await user.save();
 
-    successResponse(res, "Password reset successful. Please log in.", 200, { success: true } );
+    successResponse(res, "Password reset successful. Please log in.", 200, { success: true });
     return;
   } catch (error) {
-    errorResponse(res, "Unable to reset password. Please try again.", 500 )
+    errorResponse(res, "Unable to reset password. Please try again.", 500)
     return;
   }
 };

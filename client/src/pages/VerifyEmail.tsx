@@ -4,7 +4,7 @@ import { verifyEmailApi } from "../services/authService";
 
 const VerifyEmail = () => {
   const { token } = useParams();
-
+ console.log("tt", token);
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
