@@ -385,6 +385,7 @@ const forgotPassword = async (req: Request, res: Response) => {
         message: "Please provide a valid email address.",
       });
     }
+
     const normalizedEmail = email.trim().toLowerCase();
 
     const user = await User.findOne({
@@ -462,15 +463,15 @@ const resetPassword = async (
   res: Response
 ) => {
   try {
-    const tokenParams = req.params;
-    const { password } = req.body;
+    const { token } = req.params;
+    const { password } = req.body;    
 
-    const token = tokenParams ? tokenParams[0] : tokenParams;
-
-    if (!token || !/^[a-f0-9]{128}$/i.test(token)) {
-      errorResponse(res, "Invalid or expired password reset link.", 400);
+    if (!token || !/^[a-f0-9]{128}$/i.test(token.toString())) {
+      errorResponse(res, "Invalid token or expired password reset link.", 401);
       return;
     }
+
+    console.log()
 
     if (
       typeof password !== "string" ||
@@ -482,12 +483,12 @@ const resetPassword = async (
 
     const hashedToken = crypto
       .createHash("sha256")
-      .update(token)
+      .update(token.toString())
       .digest("hex");
 
     const user = await User.findOne({
       resetPasswordToken: hashedToken,
-      resetPasswordExpires: {
+      resetPasswordTokenExpires: {
         $gt: new Date(),
       },
     });
