@@ -17,11 +17,17 @@ dotenv.config();
 // Create an instance of the Express application
 const app = express();
 
+
+const allowedClientOrigins = env.CLIENT_URL.split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 // Define the port for the server to listen on
 const PORT = env.PORT || 3000;
 
 // Enable CORS and JSON parsing middleware
-app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
+app.use(cors({ origin: allowedClientOrigins, credentials: true }));
+app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));

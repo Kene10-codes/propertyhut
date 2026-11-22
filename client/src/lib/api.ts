@@ -1,23 +1,53 @@
 import axios from "axios";
-
-const API_URL =
-  (import.meta as ImportMeta & { env: { VITE_API_URL?: string } }).env
-    .VITE_API_URL ?? "http://localhost:3000/api";
-
-
 import {
   clearAccessToken,
   getAccessToken,
   setAccessToken,
 } from "../utils/tokenManager";
 
+const clientEnv = (
+  import.meta as ImportMeta & {
+    env: {
+      DEV?: boolean;
+      VITE_LOCAL_API_URL?: string;
+      VITE_PRODUCTION_API_URL?: string;
+    };
+  }
+).env;
+
+const normalizeApiUrl = (url: string) => url.replace(/\/+$/, "");
+const localApiUrl = normalizeApiUrl(
+  clientEnv.VITE_LOCAL_API_URL ?? "http://localhost:3100/api",
+);
+const productionApiUrl = normalizeApiUrl(
+  clientEnv.VITE_PRODUCTION_API_URL ??
+    "https://propertyhut.onrender.com/api",
+);
+
+const apiBaseUrlPromise = (async () => {
+  if (!clientEnv.DEV) {
+    return productionApiUrl;
+  }
+
+  try {
+    await axios.get(`${localApiUrl}/health`, { timeout: 2000 });
+    console.info("Using local API:", localApiUrl);
+    return localApiUrl;
+  } catch {
+    console.info("Local API unavailable; using production API:", productionApiUrl);
+    return productionApiUrl;
+  }
+})();
+
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: localApiUrl,
   withCredentials: true,
 });
 
 // Attach access token to requests
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(async (config) => {
+  config.baseURL = await apiBaseUrlPromise;
+
   const token = getAccessToken();
 
   if (token) {
@@ -50,11 +80,13 @@ api.interceptors.response.use(
 
     try {
       if (!refreshPromise) {
-        refreshPromise = axios
-          .post(
-            "http://localhost:5000/api/auth/refresh",
-            {},
-            { withCredentials: true }
+        refreshPromise = apiBaseUrlPromise
+          .then((baseURL) =>
+            axios.post(
+              `${baseURL}/auth/refresh`,
+              {},
+              { withCredentials: true },
+            ),
           )
           .then((response) => {
             const newToken = response.data.accessToken;
