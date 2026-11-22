@@ -11,7 +11,7 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setLoading(true);
@@ -19,6 +19,16 @@ const ForgotPassword = () => {
     setMessage("");
 
     try {
+      if (!email) {
+        setError("Email is required");
+        return;
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setError("Please enter a valid email address");
+        return;
+      }
+
       const response = await forgotPasswordApi(email);
 
       setMessage(response.message);

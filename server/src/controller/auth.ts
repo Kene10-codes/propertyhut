@@ -385,7 +385,6 @@ const forgotPassword = async (req: Request, res: Response) => {
         message: "Please provide a valid email address.",
       });
     }
-
     const normalizedEmail = email.trim().toLowerCase();
 
     const user = await User.findOne({
@@ -410,8 +409,8 @@ const forgotPassword = async (req: Request, res: Response) => {
     user.resetPasswordTokenExpires = new Date(Date.now() + 15 * 60 * 1000);
 
     await user.save();
-
-    const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+ 
+    const resetURL = `${env.CLIENT_URL}/reset-password/${resetToken}`;
 
     const emailVerificationMessage = `
       <h2>Password Reset Request</h2>

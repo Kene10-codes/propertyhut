@@ -45,7 +45,7 @@ export const resendVerificationEmailApi = async (
 export const forgotPasswordApi = async (
   email: string,
 ): Promise<ApiResponse> => {
-  const response = await api.post("/auth/forgot-password", email);
+  const response = await api.post("/auth/forgot-password", { email });
 
   return response.data;
 };
